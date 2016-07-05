@@ -7,12 +7,13 @@ defmodule Exq.Middleware.Throttler do
 
   use Timex
   @behaviour Middleware.Behaviour
+  @mock Application.get_env(:exq_throttler, :mock, %{})
 
-  @exq_middleware Application.get_env(:mock, :middleware, Exq.Middleware)
-  @exq Application.get_env(:mock, :exq, Exq)
-  @pipeline Application.get_env(:mock, :pipeline, Exq.Middleware.Pipeline)
-  @redis Application.get_env(:mock, :redis, Exq.Redis)
-  @config Application.get_env(:mock, :config, Exq.Support.Config)
+  @exq_middleware Map.get(@mock, :middleware, Exq.Middleware)
+  @exq Map.get(@mock, :exq, Exq)
+  @pipeline Map.get(@mock, :pipeline, Exq.Middleware.Pipeline)
+  @redis Map.get(@mock, :redis, Exq.Redis)
+  @config Map.get(@mock, :config, Exq.Support.Config)
 
   def before_work(pipeline), do: pipeline |> get_job_details |> execute(pipeline)
   def after_processed_work(pipeline) do
