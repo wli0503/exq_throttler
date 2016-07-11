@@ -1,7 +1,6 @@
 defmodule Exq.Test.Middleware.ThrottlerTest do
   use ExUnit.Case
 
-  alias Exq.Redis.Connection
   alias Exq.Middleware.Throttler
   use Timex
 
@@ -58,7 +57,7 @@ defmodule Exq.Test.Middleware.ThrottlerTest do
   end
 
   test "throttle/4 throttles the queue, requeues the job and terminates the pipeline" do
-    pipeline = %{namespace: "exq", assigns: nil}
+    pipeline = %{namespace: "exq", assigns: %{manager: "test_manager", namespace: "test_namespace", queue: "testqueue", job_json: "test_json"}}
     job_details = %{queue: "testqueue", class: "testclass", args: ["testarg"]}
     assert Throttler.throttle(true, [], job_details, pipeline) == (pipeline |> Map.put(:terminated, true))
   end

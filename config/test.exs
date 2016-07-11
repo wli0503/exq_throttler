@@ -6,5 +6,6 @@ config :exq_throttler,
     pipeline: Exq.Test.Mocks.Pipeline,
     middleware: Exq.Test.Mocks.Middleware,
     redis: Exq.Test.Mocks.Redis,
-    support: Exq.Test.Mocks.Support
+    support: Exq.Test.Mocks.Support,
+    manager: Exq.Test.Mocks.Manager.Server
   }

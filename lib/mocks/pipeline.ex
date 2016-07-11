@@ -1,4 +1,4 @@
 defmodule Exq.Test.Mocks.Pipeline do
-  def terminate(%{}), do: %{namespace: "exq", assigns: nil, terminated: true}
+  def terminate(%{assigns: assigns}), do: %{namespace: "exq", assigns: assigns, terminated: true}
   def terminate(_), do: false
 end
