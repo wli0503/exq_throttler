@@ -28,7 +28,7 @@ defmodule ExqThrottler.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:exq, path: "/Users/wenli/Documents/project/research/exq"},
+      {:exq, git: "git@github.com:akira/exq.git"},
       {:timex, "~> 2.1.4"}
     ]
   end
