@@ -28,7 +28,7 @@ defmodule ExqThrottler.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:exq, git: "git@github.com:akira/exq.git"},
+      {:exq, "~> 0.7.2"},
       {:timex, "~> 2.1.4"}
     ]
   end
