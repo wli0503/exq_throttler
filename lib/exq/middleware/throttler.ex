@@ -23,7 +23,9 @@ defmodule Exq.Middleware.Throttler do
   def after_failed_work(pipeline), do: pipeline
 
   def get_redis_pid do
-    {:ok, pid} = Redix.start_link
+    host = Application.get_env(:exq, :host, "localhost")
+    port = Application.get_env(:exq, :port, 6379)
+    {:ok, pid} = Redix.start_link(host: host, port: port)
     pid
   end
 
