@@ -4,8 +4,8 @@ defmodule Exq.Test.Middleware.ThrottlerTest do
   alias Exq.Middleware.Throttler
   use Timex
 
-  test "get_redis_pid/0 gets redix's pid" do
-    assert Throttler.get_redis_pid |> is_pid
+  test "get_redix_pid/0 gets redix's pid" do
+    assert Throttler.get_redix_pid |> is_pid
   end
 
   test "epoch_seconds/1 returns number of seconds from epoch" do
