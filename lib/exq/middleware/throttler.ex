@@ -14,21 +14,24 @@ defmodule Exq.Middleware.Throttler do
   def after_processed_work(pipeline) do
     job_details_map = pipeline |> get_job_details
     %{queue: queue, namespace: namespace} = job_details_map
-    redix_pid  = get_redix_pid
+    redix_pid  = get_redix_pid(pipeline)
     queue
     |> String.to_atom
     |> get_throttler_opts
     |> record_throttled(redix_pid, namespace, queue)
-    Redix.stop(redix_pid)
     pipeline
   end
   def after_failed_work(pipeline), do: pipeline
 
-  def get_redix_pid do
-    host = Application.get_env(:exq, :host, "localhost")
-    port = Application.get_env(:exq, :port, 6379)
-    {:ok, pid} = Redix.start_link(host: host, port: port)
-    pid
+  def get_redix_pid(pipeline) do
+    case pipeline |> Map.get(:assigns, %{}) |> Map.get(:redis, nil) do
+      nil ->
+        host = Application.get_env(:exq, :host, "localhost")
+        port = Application.get_env(:exq, :port, 6379)
+        {:ok, pid} = Redix.start_link(host: host, port: port)
+        pid
+      redis_pid -> redis_pid
+    end
   end
 
   def get_throttler_opts(queue_atom) do
@@ -72,10 +75,9 @@ defmodule Exq.Middleware.Throttler do
   def do_execute(nil, _, pipeline), do: pipeline
   def do_execute(throttle_opts, job_details, pipeline) do
     %{namespace: namespace, queue: queue} = job_details
-    get_redix_pid
+    get_redix_pid(pipeline)
     |> should_throttle?(namespace, queue, throttle_opts)
     |> throttle(throttle_opts, job_details, pipeline)
-    |> Redix.stop
   end
 
   def throttle(true, throttle_opts, job_details, pipeline) do
