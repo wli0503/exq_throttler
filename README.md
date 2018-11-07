@@ -1,7 +1,7 @@
 # ExqThrottler
 
 A throttler implementation for Exq.
-* WORK IN PROGRESS. NOT COMPATIABLE WITH CURRENT EXQ IMPLEMENTATION * 
+* WORK IN PROGRESS. * 
 
 ## Installation
 
